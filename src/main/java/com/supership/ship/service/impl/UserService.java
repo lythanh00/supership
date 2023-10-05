@@ -41,7 +41,7 @@ public class UserService implements IUserService {
             UserEntity oldUserEntity = userEntityOptional.orElse(null);
             userEntity = userConverter.toEntity(userDTO, oldUserEntity);
         } else {
-            
+
             // userentity.id = userdto.role +  userdto.username
             userEntity = userConverter.toEntity(userDTO);
         }
