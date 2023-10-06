@@ -9,5 +9,7 @@ import java.util.List;
 public interface IUserService {
     UserDTO save(UserDTO userDTO);
 
+    UserDTO login(String userName, String password);
+
 }
 

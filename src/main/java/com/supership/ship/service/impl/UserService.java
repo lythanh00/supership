@@ -4,6 +4,7 @@ import com.supership.ship.converter.UserConverter;
 import com.supership.ship.dto.UserDTO;
 import com.supership.ship.entity.RoleEntity;
 import com.supership.ship.entity.UserEntity;
+import com.supership.ship.exception.UserException;
 import com.supership.ship.repository.RoleRepository;
 import com.supership.ship.repository.UserRepository;
 import com.supership.ship.service.IUserService;
@@ -60,6 +61,24 @@ public class UserService implements IUserService {
         userEntity = userRepository.save(userEntity);
 
         return userConverter.toDTO(userEntity);
+    }
+
+    @Override
+    public UserDTO login(String userName, String password) {
+        Optional<UserEntity> o_userEntity = Optional.ofNullable(userRepository.findByUserName(userName));
+        if (!o_userEntity.isPresent()) {
+            throw new UserException("User is not found");
+        }
+
+        UserEntity userEntity = o_userEntity.get();
+        String storedPassword = userEntity.getPassword(); // Lấy mật khẩu đã lưu trữ
+        if (password.equals(storedPassword)) {
+            // Mật khẩu khớp, đăng nhập thành công
+            // Trả về thông tin người dùng hoặc thực hiện các thao tác khác tùy theo yêu cầu của bạn
+            return userConverter.toDTO(userEntity);
+        } else{
+            throw new UserException("Password is incorrect");
+        }
     }
 
 }
