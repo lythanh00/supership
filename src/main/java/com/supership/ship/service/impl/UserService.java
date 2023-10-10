@@ -48,6 +48,7 @@ public class UserService implements IUserService {
             UserEntity oldUserEntity = userEntityOptional.orElse(null);
             userEntity = userConverter.toEntity(userDTO, oldUserEntity);
         } else { // create
+            userDTO.setIsActived(1);
             // bam password
             userDTO.setHashed_pasword(hash.hashPassword(userDTO.getPassword()));
             // userentity.id = userdto.role +  userdto.username

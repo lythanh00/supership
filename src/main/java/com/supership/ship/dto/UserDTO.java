@@ -22,7 +22,7 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 
     private String email;
 
-    private Integer isActived; // k co
+    private Integer isActived; // da set tu dong = 1 khong can truyen tu ngoai vao
 
     private List<String> roleCode;
 
