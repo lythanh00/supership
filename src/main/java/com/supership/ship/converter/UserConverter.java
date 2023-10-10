@@ -13,7 +13,8 @@ public class UserConverter {
     public UserEntity toEntity(UserDTO dto){
         UserEntity entity = new UserEntity();
         entity.setUserName(dto.getUserName());
-        entity.setPassword(dto.getPassword());
+//        entity.setPassword(dto.getPassword());
+        entity.setPassword(dto.getHashed_pasword());
         entity.setFullName(dto.getFullName());
         entity.setEmail(dto.getEmail());
         entity.setIsActived(dto.getIsActived());
@@ -39,7 +40,8 @@ public class UserConverter {
 
     public UserEntity toEntity(UserDTO dto, UserEntity entity){
         entity.setUserName(dto.getUserName());
-        entity.setPassword(dto.getPassword());
+//        entity.setPassword(dto.getPassword());
+        entity.setPassword(dto.getHashed_pasword());
         entity.setFullName(dto.getFullName());
         entity.setEmail(dto.getEmail());
         entity.setIsActived(dto.getIsActived());

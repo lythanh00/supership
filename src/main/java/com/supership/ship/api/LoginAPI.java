@@ -57,6 +57,9 @@ public class LoginAPI {
                 case "User is not found":
                     result.addError(new FieldError("loginrequest", "userName", "UserName is not exist"));
                     break;
+                case "User is not activated":
+                    result.addError(new FieldError("loginrequest", "userName", "UserName is not activated"));
+                    break;
                 case "Password is incorrect":
                     result.addError(new FieldError("loginrequest", "password", "Password is incorrect"));
                     break;
@@ -75,6 +78,13 @@ public class LoginAPI {
     public String showRegister(){
         return "register";
     }
+
+    @GetMapping("foo")
+    public String foo(){
+        throw new UserException("User is not found");
+    }
+
+
 
     @GetMapping("admin")
     public String showAdminPage(HttpSession session){

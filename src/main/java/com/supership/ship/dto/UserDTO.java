@@ -1,9 +1,6 @@
 package com.supership.ship.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,9 +8,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//@Data
+//@Builder
 public class UserDTO extends AbstractDTO<UserDTO>{
 
     private String userName;
+
+    private String hashed_pasword;
 
     private String password; // k co
 
