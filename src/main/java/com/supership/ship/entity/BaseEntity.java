@@ -16,32 +16,32 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "createduser")
+    @Column(name = "createdby")
     @CreatedBy
-    private String createdUser;
+    private String createdBy;
 
     @Column(name = "createddate")
     @CreatedDate
     private Date createdDate;
 
-    @Column(name = "updateduser")
+    @Column(name = "modifiedby")
     @LastModifiedBy
-    private String updatedUser;
+    private String modifiedBy;
 
-    @Column(name = "updateddate")
+    @Column(name = "modifieddate")
     @LastModifiedDate
-    private Date updatedDate;
+    private Date modifiedDate;
 
     public Long getId(){
         return id;
     }
 
-    public String getCreatedUser() {
-        return createdUser;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreatedUser(String createdUser) {
-        this.createdUser = createdUser;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Date getCreatedDate() {
@@ -52,20 +52,20 @@ public abstract class BaseEntity {
         this.createdDate = createdDate;
     }
 
-    public String getUpdatedUser() {
-        return updatedUser;
+    public String getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setUpdatedUser(String updatedUser) {
-        this.updatedUser = updatedUser;
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
-    public Date getUpdatedDate() {
-        return updatedDate;
+    public Date getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }
 

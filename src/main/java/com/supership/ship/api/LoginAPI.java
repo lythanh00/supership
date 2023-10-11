@@ -3,6 +3,7 @@ package com.supership.ship.api;
 import com.supership.ship.dto.UserDTO;
 import com.supership.ship.exception.UserException;
 import com.supership.ship.request.LoginRequest;
+import com.supership.ship.request.RegisterRequest;
 import com.supership.ship.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,7 +76,31 @@ public class LoginAPI {
     }
 
     @GetMapping("register")
-    public String showRegister(){
+    public String showRegister(Model model){
+        model.addAttribute("registerrequest", new RegisterRequest()); // Tạo đối tượng để lưu thông tin đăng ký
+        return "register";
+    }
+
+    @PostMapping("register")
+    public String handleRegister(@Valid @ModelAttribute("registerrequest") RegisterRequest registerRequest, BindingResult result){
+        if (result.hasErrors()) {
+            return "register"; // Nếu có lỗi, trả về lại trang đăng ký
+        }
+        // Xử lý thông tin đăng ký và tạo tài khoản người dùng
+        try {
+            userService.register(registerRequest);
+            return "redirect:/login"; // Chuyển hướng người dùng đến trang đăng nhập sau khi đăng ký thành công
+        } catch (UserException ex) {
+            switch (ex.getMessage()) {
+                case "Username is already exist":
+                    result.addError(new FieldError("registerrequest", "userName", "Username is already exist"));
+                    break;
+                case "Password confirmation does not match":
+                    result.addError(new FieldError("registerrequest", "confirmPassword", "Password confirmation does not match"));
+                    break;
+
+            }
+        }
         return "register";
     }
 

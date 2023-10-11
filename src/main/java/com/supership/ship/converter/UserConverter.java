@@ -35,6 +35,10 @@ public class UserConverter {
             roleCodes.add(role.getCode());
         }
         dto.setRoleCode(roleCodes);
+        dto.setCreatedBy(entity.getCreatedBy());
+        dto.setCreatedDate(entity.getCreatedDate());
+        dto.setModifiedBy(entity.getModifiedBy());
+        dto.setModifiedDate(entity.getModifiedDate());
         return dto;
     }
 

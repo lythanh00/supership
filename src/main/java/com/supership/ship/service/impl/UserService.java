@@ -8,6 +8,7 @@ import com.supership.ship.exception.UserException;
 import com.supership.ship.hash.Hashing;
 import com.supership.ship.repository.RoleRepository;
 import com.supership.ship.repository.UserRepository;
+import com.supership.ship.request.RegisterRequest;
 import com.supership.ship.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -78,14 +79,11 @@ public class UserService implements IUserService {
         if (!o_userEntity.isPresent()) {
             throw new UserException("User is not found");
         }
-
         UserEntity userEntity = o_userEntity.get();
         // check isActived
         if (userEntity.getIsActived() == 0){
             throw new UserException("User is not activated");
         }
-
-
         //check password
         String storedPassword = userEntity.getPassword(); // Lấy mật khẩu đã lưu trữ
         if (hash.validatePassword(password, storedPassword)) {
@@ -95,6 +93,36 @@ public class UserService implements IUserService {
         } else{
             throw new UserException("Password is incorrect");
         }
+    }
+
+    @Override
+    public UserDTO register(RegisterRequest registerRequest) {
+        // Kiểm tra xem tên người dùng đã tồn tại chưa
+        if (userRepository.existsByUserName(registerRequest.getUserName())) {
+            throw new UserException("Username is already exist");
+        }
+
+        // Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp nhau không
+        if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
+            throw new UserException("Password confirmation does not match");
+        }
+
+        // Tạo đối tượng UserEntity từ thông tin đăng ký
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName(registerRequest.getUserName());
+        userEntity.setFullName(registerRequest.getFullName());
+        userEntity.setPhoneNumber(registerRequest.getPhoneNumber());
+        userEntity.setIsActived(1); // Mặc định là không kích hoạt, người dùng cần xác nhận email để kích hoạt
+
+        // Băm mật khẩu trước khi lưu vào cơ sở dữ liệu
+        String hashedPassword = hash.hashPassword(registerRequest.getPassword());
+        userEntity.setPassword(hashedPassword);
+
+        // Lưu người dùng mới vào cơ sở dữ liệu
+        userEntity = userRepository.save(userEntity);
+
+        // Trả về thông tin người dùng đã đăng ký
+        return userConverter.toDTO(userEntity);
     }
 
 }
