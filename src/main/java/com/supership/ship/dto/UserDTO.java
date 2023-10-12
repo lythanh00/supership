@@ -14,11 +14,17 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 
     private String userName;
 
-    private String hashed_pasword;
+    private String fullName;
+
+//    private Integer gender;
+//
+//    private String address;
+
+    private String hashed_password;
 
     private String password; // k co
 
-    private String fullName;
+
 
     private String email;
 

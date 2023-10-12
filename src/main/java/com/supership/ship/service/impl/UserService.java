@@ -47,11 +47,22 @@ public class UserService implements IUserService {
         if (userDTO.getId() != null){ // update
             Optional<UserEntity> userEntityOptional = userRepository.findById(userDTO.getId());
             UserEntity oldUserEntity = userEntityOptional.orElse(null);
-            userEntity = userConverter.toEntity(userDTO, oldUserEntity);
+            if (oldUserEntity != null) {
+                // Kiểm tra xem mật khẩu đã thay đổi chưa
+                if (!userDTO.getPassword().equals(oldUserEntity.getPassword())) {
+                    // Mật khẩu đã thay đổi, băm mật khẩu mới
+                    userDTO.setHashed_password(hash.hashPassword(userDTO.getPassword()));
+                }
+
+                userEntity = userConverter.toEntity(userDTO, oldUserEntity);
+            } else {
+                // Xử lý tình huống khi không tìm thấy người dùng để cập nhật
+                // (có thể làm gì đó tùy theo yêu cầu của bạn)
+            }
         } else { // create
             userDTO.setIsActived(1);
             // bam password
-            userDTO.setHashed_pasword(hash.hashPassword(userDTO.getPassword()));
+            userDTO.setHashed_password(hash.hashPassword(userDTO.getPassword()));
             // userentity.id = userdto.role +  userdto.username
             userEntity = userConverter.toEntity(userDTO);
         }

@@ -1,13 +1,13 @@
 package com.supership.ship.api;
 
 
+import com.supership.ship.dto.ResponseDTO;
 import com.supership.ship.dto.UserDTO;
 import com.supership.ship.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -16,6 +16,8 @@ public class UserAPI {
 
     @Autowired
     private IUserService userService;
+
+
 
 
 //    @GetMapping("/search")
@@ -39,15 +41,24 @@ public class UserAPI {
 
 
     @PostMapping(value = "/user")
-    public UserDTO createUser(@RequestBody UserDTO model){
-
-        return userService.save(model);
+    public ResponseEntity<ResponseDTO> createUser(@RequestBody UserDTO model){
+        UserDTO userDTO = userService.save(model);
+        if (userDTO != null) {
+            return new ResponseEntity<>(new ResponseDTO(200, userDTO, "User created successfully"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseDTO(500, null, "Failed to create user"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/user/{id}")
-    public UserDTO updateUser(@RequestBody UserDTO model, @PathVariable("id") long id){
+    public ResponseEntity<ResponseDTO> updateUser(@RequestBody UserDTO model, @PathVariable("id") long id){
         model.setId(id);
-        return userService.save(model);
+        UserDTO userDTO = userService.save(model);
+        if (userDTO != null) {
+            return new ResponseEntity<>(new ResponseDTO(200, userDTO, "User updated successfully"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseDTO(500, null, "Failed to update user"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 //
 //    @DeleteMapping("/{id}")
