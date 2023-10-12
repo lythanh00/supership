@@ -26,13 +26,13 @@ public class UserEntity extends BaseEntity{
     private String phoneNumber;
 
     @Column(name = "birthday")
-    private Date birthDay;
+    private Date birthday;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "departmentid")
-    private Long departmentId;
+//    @Column(name = "departmentid")
+//    private Long departmentId;
 
     @Column(name = "beginworkdate")
     private Date beginWorkDate;
@@ -95,12 +95,12 @@ public class UserEntity extends BaseEntity{
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getEmail() {
@@ -111,13 +111,13 @@ public class UserEntity extends BaseEntity{
         this.email = email;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
+//    public Long getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(Long departmentId) {
+//        this.departmentId = departmentId;
+//    }
 
     public Date getBeginWorkDate() {
         return beginWorkDate;

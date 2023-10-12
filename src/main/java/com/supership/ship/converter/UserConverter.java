@@ -13,10 +13,17 @@ public class UserConverter {
     public UserEntity toEntity(UserDTO dto){
         UserEntity entity = new UserEntity();
         entity.setUserName(dto.getUserName());
+        entity.setFullName(dto.getFullName());
+        entity.setGender(dto.getGender());
+        entity.setAddress(dto.getAddress());
+        entity.setPhoneNumber(dto.getPhoneNumber());
+        entity.setBirthday(dto.getBirthday());
+        entity.setEmail(dto.getEmail());
+        entity.setBeginWorkDate(dto.getBeginWorkDate());
+        entity.setEndWorkDate(dto.getEndWorkDate());
+        entity.setWorkStoreId(dto.getWorkStoreId());
 //        entity.setPassword(dto.getPassword());
         entity.setPassword(dto.getHashed_password());
-        entity.setFullName(dto.getFullName());
-        entity.setEmail(dto.getEmail());
         entity.setIsActived(dto.getIsActived());
         return entity;
     }
@@ -28,7 +35,14 @@ public class UserConverter {
         }
         dto.setUserName(entity.getUserName());
         dto.setFullName(entity.getFullName());
+        dto.setGender(entity.getGender());
+        dto.setAddress(entity.getAddress());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setBirthday(entity.getBirthday());
         dto.setEmail(entity.getEmail());
+        dto.setBeginWorkDate(entity.getBeginWorkDate());
+        dto.setEndWorkDate(entity.getEndWorkDate());
+        dto.setWorkStoreId(entity.getWorkStoreId());
         dto.setIsActived(entity.getIsActived());
         List<String> roleCodes = new ArrayList<>();
         for (RoleEntity role : entity.getRoles()) {
@@ -44,10 +58,17 @@ public class UserConverter {
 
     public UserEntity toEntity(UserDTO dto, UserEntity entity){
         entity.setUserName(dto.getUserName());
+        entity.setFullName(dto.getFullName());
+        entity.setGender(dto.getGender());
+        entity.setAddress(dto.getAddress());
+        entity.setPhoneNumber(dto.getPhoneNumber());
+        entity.setBirthday(dto.getBirthday());
+        entity.setEmail(dto.getEmail());
+        entity.setBeginWorkDate(dto.getBeginWorkDate());
+        entity.setEndWorkDate(dto.getEndWorkDate());
+        entity.setWorkStoreId(dto.getWorkStoreId());
 //        entity.setPassword(dto.getPassword());
         entity.setPassword(dto.getHashed_password());
-        entity.setFullName(dto.getFullName());
-        entity.setEmail(dto.getEmail());
         entity.setIsActived(dto.getIsActived());
         return entity;
     }

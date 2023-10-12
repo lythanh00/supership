@@ -2,6 +2,7 @@ package com.supership.ship.dto;
 
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,17 +17,25 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 
     private String fullName;
 
-//    private Integer gender;
-//
-//    private String address;
+    private Integer gender;
+
+    private String address;
+
+    private String phoneNumber;
+
+    private Date birthday;
+
+    private String email;
+
+    private Date beginWorkDate;
+
+    private Date endWorkDate;
+
+    private Long workStoreId;
 
     private String hashed_password;
 
     private String password; // k co
-
-
-
-    private String email;
 
     private Integer isActived; // da set tu dong = 1 khong can truyen tu ngoai vao
 
