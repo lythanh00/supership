@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +82,33 @@ public class UserService implements IUserService {
         userEntity = userRepository.save(userEntity);
 
         return userConverter.toDTO(userEntity);
+    }
+
+    @Override
+    public List<UserDTO> findAll(Pageable pageable) {
+        List<UserDTO> results = new ArrayList<>();
+        List<UserEntity> entities = userRepository.findAll(pageable).getContent();
+        for (UserEntity item: entities){
+            UserDTO userDTO = userConverter.toDTO(item);
+            results.add(userDTO);
+        }
+        return results;
+    }
+
+    @Override
+    public int totalItem() {
+        return (int) userRepository.count();
+    }
+
+    @Override
+    public List<UserDTO> findAll() {
+        List<UserDTO> results = new ArrayList<>();
+        List<UserEntity> entities = userRepository.findAll();
+        for (UserEntity item: entities){
+            UserDTO userDTO = userConverter.toDTO(item);
+            results.add(userDTO);
+        }
+        return results;
     }
 
     @Override

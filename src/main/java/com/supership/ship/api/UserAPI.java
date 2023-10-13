@@ -1,10 +1,13 @@
 package com.supership.ship.api;
 
 
+import com.supership.ship.api.output.UserOutput;
 import com.supership.ship.dto.ResponseDTO;
 import com.supership.ship.dto.UserDTO;
 import com.supership.ship.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +40,22 @@ public class UserAPI {
 //        UserDTO result = userService.getUserById(id);
 //        return ResponseEntity.ok(result);
 //    }
+
+    @GetMapping(value = "/user")
+    public UserOutput showUser(@RequestParam(value = "page", required = false) Integer page,
+                               @RequestParam(value = "limit", required = false) Integer limit){
+        UserOutput result = new UserOutput();
+        if (page != null && limit != null){
+            result.setPage(page);
+            Pageable pageable = new PageRequest(page - 1, limit);
+            result.setListResult(userService.findAll(pageable));
+            result.setTotalPage((int) Math.ceil((double) (userService.totalItem()) / limit));
+        }else {
+            result.setListResult(userService.findAll());
+        }
+
+        return result;
+    }
 
 
 
