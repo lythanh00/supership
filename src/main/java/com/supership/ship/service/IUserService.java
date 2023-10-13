@@ -14,6 +14,7 @@ public interface IUserService {
     int totalItem();
     List<UserDTO> findAll();
     UserDTO findUserByUserName(String userName);
+    UserDTO deactivateUser(Long id);
     UserDTO login(String userName, String password);
     UserDTO register(RegisterRequest registerRequest);
 

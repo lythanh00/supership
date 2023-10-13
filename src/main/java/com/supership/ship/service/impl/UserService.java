@@ -49,12 +49,8 @@ public class UserService implements IUserService {
             Optional<UserEntity> userEntityOptional = userRepository.findById(userDTO.getId());
             UserEntity oldUserEntity = userEntityOptional.orElse(null);
             if (oldUserEntity != null) {
-                // Kiểm tra xem mật khẩu đã thay đổi chưa
-                if (!userDTO.getPassword().equals(oldUserEntity.getPassword())) {
-                    // Mật khẩu đã thay đổi, băm mật khẩu mới
-                    userDTO.setHashed_password(hash.hashPassword(userDTO.getPassword()));
-                }
-
+                // bam password
+                userDTO.setHashed_password(hash.hashPassword(userDTO.getPassword()));
                 userEntity = userConverter.toEntity(userDTO, oldUserEntity);
             } else {
                 // Xử lý tình huống khi không tìm thấy người dùng để cập nhật
@@ -118,6 +114,18 @@ public class UserService implements IUserService {
             return userConverter.toDTO(userEntity);
         }
         return null; // Hoặc có thể ném một ngoại lệ nếu cần thiết
+    }
+
+
+    @Override
+    @Transactional
+    public UserDTO deactivateUser(Long id) {
+        UserEntity userEntity = new UserEntity();
+        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+        userEntity = userEntityOptional.orElse(null);
+        userEntity.setIsActived(0);
+        userEntity = userRepository.save(userEntity);
+        return userConverter.toDTO(userEntity);
     }
 
     @Override

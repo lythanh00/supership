@@ -57,7 +57,7 @@ public class UserConverter {
     }
 
     public UserEntity toEntity(UserDTO dto, UserEntity entity){
-        entity.setUserName(dto.getUserName());
+//        entity.setUserName(dto.getUserName());
         entity.setFullName(dto.getFullName());
         entity.setGender(dto.getGender());
         entity.setAddress(dto.getAddress());

@@ -42,61 +42,66 @@ public class UserAPI {
 //    }
 
     @GetMapping(value = "/user")
-    public ResponseEntity<ResponseDTO> showUser(@RequestParam(value = "page", required = false) Integer page,
-                                                @RequestParam(value = "limit", required = false) Integer limit,
-                                                @RequestParam(value = "userName", required = false) String userName){
+    public ResponseDTO showUser(@RequestParam(value = "page", required = false) Integer page,
+                                @RequestParam(value = "limit", required = false) Integer limit,
+                                @RequestParam(value = "userName", required = false) String userName) {
 
         UserOutput userOutput = new UserOutput();
         if (userName != null) {
             // Tìm kiếm người dùng theo tên
             UserDTO user = userService.findUserByUserName(userName);
             if (user != null) {
-                return new ResponseEntity<>(new ResponseDTO(200, user, "User found successfully"), HttpStatus.OK);
+                return new ResponseDTO(200, user, "User found successfully");
             } else {
-                return new ResponseEntity<>(new ResponseDTO(404, null, "User not found"), HttpStatus.NOT_FOUND);
+                return new ResponseDTO(404, null, "User not found");
             }
         }
-        if (page != null && limit != null){
+        if (page != null && limit != null) {
             userOutput.setPage(page);
             Pageable pageable = new PageRequest(page - 1, limit);
             userOutput.setListResult(userService.findAll(pageable));
             userOutput.setTotalPage((int) Math.ceil((double) (userService.totalItem()) / limit));
-        }else {
+        } else {
             userOutput.setListResult(userService.findAll());
         }
 
         if (!userOutput.getListResult().isEmpty()) {
-            return new ResponseEntity<>(new ResponseDTO(200, userOutput, "Users found successfully"), HttpStatus.OK);
+            return new ResponseDTO(200, userOutput, "Users found successfully");
         } else {
-            return new ResponseEntity<>(new ResponseDTO(404, null, "No users found"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseDTO(404, null, "No users found");
         }
     }
 
 
 
     @PostMapping(value = "/user")
-    public ResponseEntity<ResponseDTO> createUser(@RequestBody UserDTO model){
+    public ResponseDTO createUser(@RequestBody UserDTO model) {
         UserDTO userDTO = userService.save(model);
         if (userDTO != null) {
-            return new ResponseEntity<>(new ResponseDTO(200, userDTO, "User created successfully"), HttpStatus.OK);
+            return new ResponseDTO(200, userDTO, "User created successfully");
         } else {
-            return new ResponseEntity<>(new ResponseDTO(500, null, "Failed to create user"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseDTO(500, null, "Failed to create user");
         }
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<ResponseDTO> updateUser(@RequestBody UserDTO model, @PathVariable("id") long id){
+    public ResponseDTO updateUser(@RequestBody UserDTO model, @PathVariable("id") long id) {
         model.setId(id);
         UserDTO userDTO = userService.save(model);
         if (userDTO != null) {
-            return new ResponseEntity<>(new ResponseDTO(200, userDTO, "User updated successfully"), HttpStatus.OK);
+            return new ResponseDTO(200, userDTO, "User updated successfully");
         } else {
-            return new ResponseEntity<>(new ResponseDTO(500, null, "Failed to update user"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseDTO(500, null, "Failed to update user");
         }
     }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteUser(){
-//        return null;
-//    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseDTO deleteUser(@PathVariable Long id) {
+        UserDTO userDTO = userService.deactivateUser(id);
+        if (userDTO == null) {
+            return new ResponseDTO(404, null, "User not found");
+        }
+
+        return new ResponseDTO(200, userDTO, "User deactivated successfully");
+    }
 }
