@@ -42,19 +42,34 @@ public class UserAPI {
 //    }
 
     @GetMapping(value = "/user")
-    public UserOutput showUser(@RequestParam(value = "page", required = false) Integer page,
-                               @RequestParam(value = "limit", required = false) Integer limit){
-        UserOutput result = new UserOutput();
+    public ResponseEntity<ResponseDTO> showUser(@RequestParam(value = "page", required = false) Integer page,
+                                                @RequestParam(value = "limit", required = false) Integer limit,
+                                                @RequestParam(value = "userName", required = false) String userName){
+
+        UserOutput userOutput = new UserOutput();
+        if (userName != null) {
+            // Tìm kiếm người dùng theo tên
+            UserDTO user = userService.findUserByUserName(userName);
+            if (user != null) {
+                return new ResponseEntity<>(new ResponseDTO(200, user, "User found successfully"), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ResponseDTO(404, null, "User not found"), HttpStatus.NOT_FOUND);
+            }
+        }
         if (page != null && limit != null){
-            result.setPage(page);
+            userOutput.setPage(page);
             Pageable pageable = new PageRequest(page - 1, limit);
-            result.setListResult(userService.findAll(pageable));
-            result.setTotalPage((int) Math.ceil((double) (userService.totalItem()) / limit));
+            userOutput.setListResult(userService.findAll(pageable));
+            userOutput.setTotalPage((int) Math.ceil((double) (userService.totalItem()) / limit));
         }else {
-            result.setListResult(userService.findAll());
+            userOutput.setListResult(userService.findAll());
         }
 
-        return result;
+        if (!userOutput.getListResult().isEmpty()) {
+            return new ResponseEntity<>(new ResponseDTO(200, userOutput, "Users found successfully"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseDTO(404, null, "No users found"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 

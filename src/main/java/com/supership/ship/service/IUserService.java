@@ -13,6 +13,7 @@ public interface IUserService {
     List<UserDTO> findAll(Pageable pageable);
     int totalItem();
     List<UserDTO> findAll();
+    UserDTO findUserByUserName(String userName);
     UserDTO login(String userName, String password);
     UserDTO register(RegisterRequest registerRequest);
 

@@ -112,6 +112,15 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserDTO findUserByUserName(String userName) {
+        UserEntity userEntity = userRepository.findByUserName(userName);
+        if (userEntity != null) {
+            return userConverter.toDTO(userEntity);
+        }
+        return null; // Hoặc có thể ném một ngoại lệ nếu cần thiết
+    }
+
+    @Override
     public UserDTO login(String userName, String password) {
         Optional<UserEntity> o_userEntity = Optional.ofNullable(userRepository.findByUserName(userName));
         //check username
