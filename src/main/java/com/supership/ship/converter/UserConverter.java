@@ -25,6 +25,7 @@ public class UserConverter {
 //        entity.setPassword(dto.getPassword());
         entity.setPassword(dto.getHashed_password());
         entity.setIsActived(dto.getIsActived());
+        entity.setRole(dto.getRole());
         return entity;
     }
 
@@ -44,11 +45,12 @@ public class UserConverter {
         dto.setEndWorkDate(entity.getEndWorkDate());
         dto.setWorkStoreId(entity.getWorkStoreId());
         dto.setIsActived(entity.getIsActived());
-        List<String> roleCodes = new ArrayList<>();
-        for (RoleEntity role : entity.getRoles()) {
-            roleCodes.add(role.getCode());
-        }
-        dto.setRoleCode(roleCodes);
+//        List<String> roleCodes = new ArrayList<>();
+//        for (RoleEntity role : entity.getRoles()) {
+//            roleCodes.add(role.getCode());
+//        }
+//        dto.setRoleCode(roleCodes);
+        dto.setRole(entity.getRole());
         dto.setCreatedBy(entity.getCreatedBy());
         dto.setCreatedDate(entity.getCreatedDate());
         dto.setModifiedBy(entity.getModifiedBy());
@@ -70,6 +72,7 @@ public class UserConverter {
 //        entity.setPassword(dto.getPassword());
         entity.setPassword(dto.getHashed_password());
         entity.setIsActived(dto.getIsActived());
+        entity.setRole(dto.getRole());
         return entity;
     }
 }

@@ -17,6 +17,7 @@ public interface IUserService {
     UserDTO deactivateUser(Long id);
     UserDTO login(String userName, String password);
     UserDTO register(RegisterRequest registerRequest);
+    String findRoleByUserName(String userName);
 
 }
 

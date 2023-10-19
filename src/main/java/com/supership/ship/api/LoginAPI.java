@@ -1,5 +1,6 @@
 package com.supership.ship.api;
 
+import com.supership.ship.dto.ResponseDTO;
 import com.supership.ship.dto.UserDTO;
 import com.supership.ship.exception.UserException;
 import com.supership.ship.request.LoginRequest;
@@ -15,93 +16,77 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-@Controller
-@RequestMapping("/")
+@CrossOrigin
+@RestController
 public class LoginAPI {
 
     @Autowired
     private IUserService userService;
 
-    @GetMapping
-    public String showHomePage(Model model, HttpSession session){
-        UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
-        if (userDTO != null) {
-            model.addAttribute("userDTO", userDTO); // Thêm userDTO vào model với attribute name là "userDTO"
-        }
-        return "index";
-    }
+//    @GetMapping
+//    public String showHomePage(Model model, HttpSession session){
+//        UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
+//        if (userDTO != null) {
+//            model.addAttribute("userDTO", userDTO); // Thêm userDTO vào model với attribute name là "userDTO"
+//        }
+//        return "index";
+//    }
 
-    @GetMapping("login")
-    public String showLogin(Model model){
-        model.addAttribute("loginrequest", new LoginRequest("", ""));
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String showLogin(Model model){
+//        model.addAttribute("loginrequest", new LoginRequest("", ""));
+//        return "login";
+//    }
 
-    @PostMapping("login")
-    public String handleLogin(@Valid @ModelAttribute("loginrequest") LoginRequest loginRequest, BindingResult result, HttpSession session){
-        if (result.hasErrors()){
-            return "login";
-        }
+    @PostMapping("/login")
+    public ResponseDTO handleLogin(@RequestBody LoginRequest loginRequest){
         UserDTO userDTO;
-        try{
-            userDTO = userService.login(loginRequest.getUserName(), loginRequest.getPassword());
-            if (userDTO != null){
-                // Đăng nhập thành công, lưu thông tin người dùng vào phiên của người dùng
-                session.setAttribute("userDTO", new UserDTO(userDTO.getId(), userDTO.getUserName(), userDTO.getFullName(), userDTO.getEmail()));
-                return "redirect:/";
-            }else {
-                // Xử lý trường hợp đăng nhập thất bại
-                //
-            }
-        } catch (UserException ex){
-            switch (ex.getMessage()){
-                case "User is not found":
-                    result.addError(new FieldError("loginrequest", "userName", "UserName is not exist"));
-                    break;
-                case "User is not activated":
-                    result.addError(new FieldError("loginrequest", "userName", "UserName is not activated"));
-                    break;
-                case "Password is incorrect":
-                    result.addError(new FieldError("loginrequest", "password", "Password is incorrect"));
-                    break;
-            }
+        userDTO = userService.login(loginRequest.getUserName(), loginRequest.getPassword());
+        if (userDTO.getNotification() == null) {
+            // Đăng nhập thành công
+            return new ResponseDTO(200, userDTO, "Đăng nhập thành công");
+        } else if (userDTO.getNotification().equals("Tài khoản không tồn tại")){
+            // Xử lý trường hợp đăng nhập thất bại
+            return new ResponseDTO(401, null, "Tài khoản không tồn tại");
+        } else if (userDTO.getNotification().equals("Tài khoản chưa được kích hoạt")){
+            // Xử lý trường hợp đăng nhập thất bại
+            return new ResponseDTO(401, null, "Tài khoản chưa được kích hoạt");
+        } else if (userDTO.getNotification().equals("Mật khẩu không hợp lệ")){ // xem lại
+            // Xử lý trường hợp đăng nhập thất bại
+            return new ResponseDTO(401, null, "Mật khẩu không hợp lệ");
         }
-        return "login";
+        return new ResponseDTO(401, null, "Đăng nhập không thành công");
     }
 
-    @GetMapping("logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session){
         session.removeAttribute("userDTO");
         return "redirect:/";
     }
 
-    @GetMapping("register")
-    public String showRegister(Model model){
-        model.addAttribute("registerrequest", new RegisterRequest()); // Tạo đối tượng để lưu thông tin đăng ký
-        return "register";
-    }
+//    @GetMapping("/register")
+//    public String showRegister(Model model){
+//        model.addAttribute("registerrequest", new RegisterRequest()); // Tạo đối tượng để lưu thông tin đăng ký
+//        return "register";
+//    }
 
-    @PostMapping("register")
-    public String handleRegister(@Valid @ModelAttribute("registerrequest") RegisterRequest registerRequest, BindingResult result){
-        if (result.hasErrors()) {
-            return "register"; // Nếu có lỗi, trả về lại trang đăng ký
+    @PostMapping("/register")
+    public ResponseDTO handleRegister(@RequestBody RegisterRequest registerRequest){
+        UserDTO userDTO;
+        userDTO = userService.register(registerRequest);
+        if (userDTO.getNotification() == null){
+            return new ResponseDTO(200, userDTO, "Đăng ký tài khoản thành công");
+        } else if (userDTO.getNotification().equals("Tài khoản không hợp lệ")){
+            // trường hợp trùng username
+            return new ResponseDTO(401, null, "Tài khoản không hợp lệ");
+        } else if (userDTO.getNotification().equals("Tài khoản đã tồn tại")){
+            // trường hợp trùng username
+            return new ResponseDTO(401, null, "Tài khoản đã tồn tại");
+        } else if (userDTO.getNotification().equals("Mật khẩu không khớp")){
+            // trường hợp trùng username
+            return new ResponseDTO(401, null, "Mật khẩu không khớp");
         }
-        // Xử lý thông tin đăng ký và tạo tài khoản người dùng
-        try {
-            userService.register(registerRequest);
-            return "redirect:/login"; // Chuyển hướng người dùng đến trang đăng nhập sau khi đăng ký thành công
-        } catch (UserException ex) {
-            switch (ex.getMessage()) {
-                case "Username is already exist":
-                    result.addError(new FieldError("registerrequest", "userName", "Username is already exist"));
-                    break;
-                case "Password confirmation does not match":
-                    result.addError(new FieldError("registerrequest", "confirmPassword", "Password confirmation does not match"));
-                    break;
-
-            }
-        }
-        return "register";
+        return new ResponseDTO(401, null, "Đăng ký tài khoản không thành công");
     }
 
     @GetMapping("foo")
@@ -111,7 +96,7 @@ public class LoginAPI {
 
 
 
-    @GetMapping("admin")
+    @GetMapping("/admin")
     public String showAdminPage(HttpSession session){
         UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
         if (userDTO != null) { // nếu chứa user trả về trang admin

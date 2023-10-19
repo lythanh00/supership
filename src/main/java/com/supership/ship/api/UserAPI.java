@@ -45,7 +45,10 @@ public class UserAPI {
     public ResponseDTO showUser(@RequestParam(value = "page", required = false) Integer page,
                                 @RequestParam(value = "limit", required = false) Integer limit,
                                 @RequestParam(value = "userName", required = false) String userName) {
-
+        // if
+        // findRoleByUserName
+        // middleware kiểm tra user có đúng role không
+        // đoạn code phân quyền
         UserOutput userOutput = new UserOutput();
         if (userName != null) {
             // Tìm kiếm người dùng theo tên

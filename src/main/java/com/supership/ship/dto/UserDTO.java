@@ -39,7 +39,9 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 
     private Integer isActived; // da set tu dong = 1 khong can truyen tu ngoai vao
 
-    private List<String> roleCode;
+    private String role;
+
+    private String notification;
 
     // Constructor có tham số
     public UserDTO(Long id, String userName, String fullName, String email) {

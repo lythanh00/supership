@@ -2,11 +2,10 @@ package com.supership.ship.service.impl;
 
 import com.supership.ship.converter.UserConverter;
 import com.supership.ship.dto.UserDTO;
-import com.supership.ship.entity.RoleEntity;
+//import com.supership.ship.entity.RoleEntity;
 import com.supership.ship.entity.UserEntity;
 import com.supership.ship.exception.UserException;
 import com.supership.ship.hash.Hashing;
-import com.supership.ship.repository.RoleRepository;
 import com.supership.ship.repository.UserRepository;
 import com.supership.ship.request.RegisterRequest;
 import com.supership.ship.service.IUserService;
@@ -35,9 +34,6 @@ public class UserService implements IUserService {
     private UserConverter userConverter;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private Hashing hash;
 
 
@@ -64,17 +60,6 @@ public class UserService implements IUserService {
             userEntity = userConverter.toEntity(userDTO);
         }
 
-        List<String> roleCodes = userDTO.getRoleCode();
-        List<RoleEntity> roleEntities = new ArrayList<>();
-        for (String roleCode : roleCodes) {
-            RoleEntity roleEntity = roleRepository.findOneByCode(roleCode);
-            if (roleEntity != null) {
-                roleEntities.add(roleEntity);
-            } else {
-                // Xử lý trường hợp không tìm thấy roleEntity nếu cần
-            }
-        }
-        userEntity.setRoles(roleEntities);
         userEntity = userRepository.save(userEntity);
 
         return userConverter.toDTO(userEntity);
@@ -131,14 +116,19 @@ public class UserService implements IUserService {
     @Override
     public UserDTO login(String userName, String password) {
         Optional<UserEntity> o_userEntity = Optional.ofNullable(userRepository.findByUserName(userName));
+        //check
+        UserDTO userDTONotification = new UserDTO();
+
         //check username
         if (!o_userEntity.isPresent()) {
-            throw new UserException("User is not found");
+            userDTONotification.setNotification("Tài khoản không tồn tại");
+            return userDTONotification;
         }
         UserEntity userEntity = o_userEntity.get();
         // check isActived
         if (userEntity.getIsActived() == 0){
-            throw new UserException("User is not activated");
+            userDTONotification.setNotification("Tài khoản chưa được kích hoạt");
+            return userDTONotification;
         }
         //check password
         String storedPassword = userEntity.getPassword(); // Lấy mật khẩu đã lưu trữ
@@ -147,20 +137,30 @@ public class UserService implements IUserService {
             // Trả về thông tin người dùng hoặc thực hiện các thao tác khác tùy theo yêu cầu của bạn
             return userConverter.toDTO(userEntity);
         } else{
-            throw new UserException("Password is incorrect");
+            userDTONotification.setNotification("Mật khẩu không hợp lệ");
+            return userDTONotification;
         }
     }
 
     @Override
     public UserDTO register(RegisterRequest registerRequest) {
+        //check
+        UserDTO userDTONotification = new UserDTO();
+        // kiểm tra xem có giá trị không
+        if (registerRequest.getUserName() == "" || registerRequest.getUserName() == null){
+            userDTONotification.setNotification("Tài khoản không hợp lệ");
+            return userDTONotification;
+        }
         // Kiểm tra xem tên người dùng đã tồn tại chưa
         if (userRepository.existsByUserName(registerRequest.getUserName())) {
-            throw new UserException("Username is already exist");
+            userDTONotification.setNotification("Tài khoản đã tồn tại");
+            return userDTONotification;
         }
 
         // Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp nhau không
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            throw new UserException("Password confirmation does not match");
+            userDTONotification.setNotification("Mật khẩu không khớp");
+            return userDTONotification;
         }
 
         // Tạo đối tượng UserEntity từ thông tin đăng ký
@@ -179,6 +179,17 @@ public class UserService implements IUserService {
 
         // Trả về thông tin người dùng đã đăng ký
         return userConverter.toDTO(userEntity);
+    }
+
+    @Override
+    public String findRoleByUserName(String userName) {
+        UserEntity userEntity = userRepository.findByUserName(userName);
+        String role;
+        if (userEntity != null) {
+            role = userEntity.getRole();
+            return role;
+        }
+        return null; // Hoặc có thể ném một ngoại lệ nếu cần thiết
     }
 
 }

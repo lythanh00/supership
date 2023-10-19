@@ -49,11 +49,22 @@ public class UserEntity extends BaseEntity{
     @Column(name = "isactived")
     private Integer isActived;
 
-    @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<RoleEntity> roles = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private List<RoleEntity> roles = new ArrayList<>();
+
+    @Column(name = "role")
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getUserName() {
         return userName;
@@ -159,12 +170,12 @@ public class UserEntity extends BaseEntity{
         this.isActived = isActived;
     }
 
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
-    }
+//    public List<RoleEntity> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(List<RoleEntity> roles) {
+//        this.roles = roles;
+//    }
 }
 
