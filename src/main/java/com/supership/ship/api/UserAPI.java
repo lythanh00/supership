@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -41,14 +44,19 @@ public class UserAPI {
 //        return ResponseEntity.ok(result);
 //    }
 
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/user/{role}")
     public ResponseDTO showUser(@RequestParam(value = "page", required = false) Integer page,
                                 @RequestParam(value = "limit", required = false) Integer limit,
-                                @RequestParam(value = "userName", required = false) String userName) {
+                                @RequestParam(value = "userName", required = false) String userName,
+                                @PathVariable String role) {
         // if
         // findRoleByUserName
         // middleware kiểm tra user có đúng role không
         // đoạn code phân quyền
+
+        if (!role.equals("ADMIN")){
+            return new ResponseDTO(404, null, "User not authenrization");
+        }
         UserOutput userOutput = new UserOutput();
         if (userName != null) {
             // Tìm kiếm người dùng theo tên

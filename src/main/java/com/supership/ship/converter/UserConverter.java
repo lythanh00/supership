@@ -1,6 +1,5 @@
 package com.supership.ship.converter;
 
-import com.supership.ship.entity.RoleEntity;
 import com.supership.ship.entity.UserEntity;
 import com.supership.ship.dto.UserDTO;
 import org.springframework.stereotype.Component;
