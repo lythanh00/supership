@@ -1,5 +1,6 @@
 package com.supership.ship.dto;
 
+import com.supership.ship.entity.ShipmentStatusEntity;
 import lombok.*;
 
 
@@ -43,11 +44,11 @@ public class ShipmentDTO extends AbstractDTO<ShipmentDTO>{
 
     private String updateHistory;
 
-    private Long sourceStoreId;
+    private Long workStoreId;
 
-    private Long destinationStoreId;
-
-    private Long shipmentStatusId;
+//    private Long shipmentStatusId;
+//
+    private String shipmentStatusCode;
 
     private BigDecimal estimateDeliveryDistance;
 
