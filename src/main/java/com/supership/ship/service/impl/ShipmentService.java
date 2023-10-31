@@ -92,8 +92,6 @@ public class ShipmentService implements IShipmentService {
 
     @Override
     public ShipmentDTO updateShipmentStatus(long shipmentId, String newStatus) {
-        // kiểm tra newStatus có phải INSTORAGE không
-
         Optional<ShipmentEntity> shipmentEntityOptional = shipmentRepository.findById(shipmentId);
         if (shipmentEntityOptional.isPresent()) {
             ShipmentEntity shipmentEntity = shipmentEntityOptional.get();
