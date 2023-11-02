@@ -88,14 +88,26 @@ public class ShipmentAPI {
     }
 
     @PutMapping("/shipment/shipmentstatus/{shipmentId}")
-    public ResponseEntity<ResponseDTO> updateShipmentStatus(@PathVariable("shipmentId") long shipmentId,
-                                                            @RequestParam("newStatus") String newStatus) {
+    public ResponseDTO updateShipmentStatus(@RequestBody ShipmentDTO model,
+                                            @PathVariable("shipmentId") long shipmentId) {
 
-        ShipmentDTO updatedShipment = shipmentService.updateShipmentStatus(shipmentId, newStatus);
+        ShipmentDTO updatedShipment = shipmentService.updateShipmentStatus(shipmentId, model.getShipmentStatusCode());
         if (updatedShipment != null){
-            return new ResponseEntity<>(new ResponseDTO(200, updatedShipment, "Thay đổi trạng thái vận đơn thành công"), HttpStatus.OK);
+            return new ResponseDTO(200, updatedShipment, "Thay đổi trạng thái vận đơn thành công");
         } else {
-            return new ResponseEntity<>(new ResponseDTO(500, null, "Thay đổi trạng thái vận đơn thất bại"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseDTO(500, null, "Thay đổi trạng thái vận đơn thất bại");
+        }
+    }
+
+    @PutMapping("/shipment/driveruser/{shipmentId}")
+    public ResponseEntity<ResponseDTO> updateDriverUser(@RequestBody ShipmentDTO model,
+                                                        @PathVariable("shipmentId") long shipmentId) {
+
+        ShipmentDTO updatedShipment = shipmentService.updateDriverUser(shipmentId, model.getDriverUserId());
+        if (updatedShipment != null){
+            return new ResponseEntity<>(new ResponseDTO(200, updatedShipment, "Nhận đơn thành công"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseDTO(500, null, "Nhận đơn thất bại"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

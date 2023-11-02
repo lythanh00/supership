@@ -92,12 +92,26 @@ public class ShipmentService implements IShipmentService {
 
     @Override
     public ShipmentDTO updateShipmentStatus(long shipmentId, String newStatus) {
-        // kiểm tra newStatus có phải INSTORAGE không
-
         Optional<ShipmentEntity> shipmentEntityOptional = shipmentRepository.findById(shipmentId);
         if (shipmentEntityOptional.isPresent()) {
             ShipmentEntity shipmentEntity = shipmentEntityOptional.get();
             shipmentEntity.setShipmentStatusCode(newStatus); // Lưu trạng thái dưới dạng chuỗi
+//            shipmentEntity.setModifiedBy("current_user"); // Đặt người sửa đổi, bạn cần lấy người dùng hiện tại ở đây
+//            shipmentEntity.setModifiedDate(new Date()); // Đặt ngày sửa đổi
+            shipmentRepository.save(shipmentEntity);
+
+            return shipmentConverter.toDTO(shipmentEntity);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public ShipmentDTO updateDriverUser(long shipmentId, long driverUserId) {
+        Optional<ShipmentEntity> shipmentEntityOptional = shipmentRepository.findById(shipmentId);
+        if (shipmentEntityOptional.isPresent()) {
+            ShipmentEntity shipmentEntity = shipmentEntityOptional.get();
+            shipmentEntity.setDriverUserId(driverUserId); // Lưu id driver user
 //            shipmentEntity.setModifiedBy("current_user"); // Đặt người sửa đổi, bạn cần lấy người dùng hiện tại ở đây
 //            shipmentEntity.setModifiedDate(new Date()); // Đặt ngày sửa đổi
             shipmentRepository.save(shipmentEntity);

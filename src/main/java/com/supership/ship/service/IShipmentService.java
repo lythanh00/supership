@@ -16,4 +16,6 @@ public interface IShipmentService {
     ShipmentDTO findShipmentByTrackingNumber(String trackingNumber);
 
     ShipmentDTO updateShipmentStatus(long shipmentId, String newStatus);
+
+    ShipmentDTO updateDriverUser(long shipmentId, long driverUserId);
 }
