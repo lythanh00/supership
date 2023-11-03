@@ -31,7 +31,7 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 
     private Date endWorkDate;
 
-    private Long workStoreId;
+    private String workStoreCode;
 
     private String hashed_password;
 

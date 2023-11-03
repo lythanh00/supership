@@ -121,4 +121,20 @@ public class ShipmentService implements IShipmentService {
             return null;
         }
     }
+
+    @Override
+    public ShipmentDTO updateWorkStore(long shipmentId, String workStore) {
+        Optional<ShipmentEntity> shipmentEntityOptional = shipmentRepository.findById(shipmentId);
+        if (shipmentEntityOptional.isPresent()) {
+            ShipmentEntity shipmentEntity = shipmentEntityOptional.get();
+            shipmentEntity.setWorkStoreCode(workStore); // Lưu kho
+//            shipmentEntity.setModifiedBy("current_user"); // Đặt người sửa đổi, bạn cần lấy người dùng hiện tại ở đây
+//            shipmentEntity.setModifiedDate(new Date()); // Đặt ngày sửa đổi
+            shipmentRepository.save(shipmentEntity);
+
+            return shipmentConverter.toDTO(shipmentEntity);
+        } else {
+            return null;
+        }
+    }
 }

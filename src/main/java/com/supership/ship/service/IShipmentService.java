@@ -18,4 +18,6 @@ public interface IShipmentService {
     ShipmentDTO updateShipmentStatus(long shipmentId, String newStatus);
 
     ShipmentDTO updateDriverUser(long shipmentId, long driverUserId);
+
+    ShipmentDTO updateWorkStore(long shipmentId, String workStore);
 }

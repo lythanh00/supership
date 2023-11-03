@@ -110,4 +110,16 @@ public class ShipmentAPI {
             return new ResponseEntity<>(new ResponseDTO(500, null, "Nhận đơn thất bại"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/shipment/workstore/{shipmentId}")
+    public ResponseEntity<ResponseDTO> updateWorkStore(@RequestBody ShipmentDTO model,
+                                                        @PathVariable("shipmentId") long shipmentId) {
+
+        ShipmentDTO updatedShipment = shipmentService.updateWorkStore(shipmentId, model.getWorkStoreCode());
+        if (updatedShipment != null){
+            return new ResponseEntity<>(new ResponseDTO(200, updatedShipment, "Cập nhật kho trữ hàng thành công"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseDTO(500, null, "Cập nhật kho trữ hàng thất bại"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

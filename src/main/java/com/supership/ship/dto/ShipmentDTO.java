@@ -44,7 +44,7 @@ public class ShipmentDTO extends AbstractDTO<ShipmentDTO>{
 
     private String updateHistory;
 
-    private Long workStoreId;
+    private String workStoreCode;
 
 //    private Long shipmentStatusId;
 //

@@ -63,8 +63,8 @@ public class ShipmentEntity extends BaseEntity{
     @Column(name = "updatehistory", columnDefinition = "TEXT")
     private String updateHistory;
 
-    @Column(name = "workstoreid")
-    private Long workStoreId;
+    @Column(name = "workstore_code")
+    private String workStoreCode;
 
 //    @Column(name = "shipmentstatusid")
 //    private Long shipmentStatusId;

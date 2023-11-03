@@ -25,7 +25,7 @@ public class ShipmentConverter {
         entity.setTrackingNumber(dto.getTrackingNumber());
         entity.setNotes(dto.getNotes());
         entity.setUpdateHistory(dto.getUpdateHistory());
-        entity.setWorkStoreId(dto.getWorkStoreId());
+        entity.setWorkStoreCode(dto.getWorkStoreCode());
 //        entity.setShipmentStatusId(dto.getShipmentStatusId());
         entity.setShipmentStatusCode(dto.getShipmentStatusCode());
         entity.setEstimateDeliveryDistance(dto.getEstimateDeliveryDistance());
@@ -56,7 +56,7 @@ public class ShipmentConverter {
         dto.setTrackingNumber(entity.getTrackingNumber());
         dto.setNotes(entity.getNotes());
         dto.setUpdateHistory(entity.getUpdateHistory());
-        dto.setWorkStoreId(entity.getWorkStoreId());
+        dto.setWorkStoreCode(entity.getWorkStoreCode());
 //        dto.setShipmentStatusId(entity.getShipmentStatusId());
         dto.setShipmentStatusCode(entity.getShipmentStatusCode());
         dto.setEstimateDeliveryDistance(entity.getEstimateDeliveryDistance());
@@ -87,7 +87,7 @@ public class ShipmentConverter {
 //        entity.setTrackingNumber(dto.getTrackingNumber());
         entity.setNotes(dto.getNotes());
         entity.setUpdateHistory(dto.getUpdateHistory());
-        entity.setWorkStoreId(dto.getWorkStoreId());
+        entity.setWorkStoreCode(dto.getWorkStoreCode());
 //        entity.setShipmentStatusId(dto.getShipmentStatusId());
 ////        entity.setShipmentStatus(dto.getShipmentStatus());
 //        entity.setShipmentStatusCode(dto.getShipmentStatusCode());
