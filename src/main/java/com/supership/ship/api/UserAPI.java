@@ -115,4 +115,19 @@ public class UserAPI {
 
         return new ResponseDTO(200, userDTO, "User deactivated successfully");
     }
+
+    @PutMapping("/user/profile")
+    public ResponseDTO updateProfile(@RequestBody UserDTO model, @RequestParam(value = "userName") String userName) {
+        // kiểm tra người dùng đã đăng nhập
+        if (userName == null){
+            return new ResponseDTO(500, null, "Người dùng chưa đăng nhập");
+        }
+        model.setUserName(userName);
+        UserDTO userDTO = userService.save(model);
+        if (userDTO != null) {
+            return new ResponseDTO(200, userDTO, "User updated successfully");
+        } else {
+            return new ResponseDTO(500, null, "Failed to update user");
+        }
+    }
 }

@@ -17,7 +17,7 @@ public abstract class BaseEntity {
     private Long id;
 
     @Column(name = "createdby")
-    @CreatedBy
+//    @CreatedBy
     private String createdBy;
 
     @Column(name = "createddate")
@@ -25,7 +25,7 @@ public abstract class BaseEntity {
     private Date createdDate;
 
     @Column(name = "modifiedby")
-    @LastModifiedBy
+//    @LastModifiedBy
     private String modifiedBy;
 
     @Column(name = "modifieddate")

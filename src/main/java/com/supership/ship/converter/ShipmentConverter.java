@@ -32,6 +32,9 @@ public class ShipmentConverter {
         entity.setActualDeliveryDistance(dto.getActualDeliveryDistance());
         entity.setIsPaidIn(dto.getIsPaidIn());
 
+        entity.setCreatedBy(dto.getCreatedBy());
+        entity.setModifiedBy(dto.getModifiedBy());
+
         return entity;
     }
 

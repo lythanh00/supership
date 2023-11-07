@@ -43,7 +43,6 @@ public class ShipmentService implements IShipmentService {
         }
 
         shipmentEntity = shipmentRepository.save(shipmentEntity);
-
         return shipmentConverter.toDTO(shipmentEntity);
     }
 
@@ -137,4 +136,17 @@ public class ShipmentService implements IShipmentService {
             return null;
         }
     }
+
+    @Override
+    public List<ShipmentDTO> getAllShipmentByCreatedBy(String userName) {
+        List<ShipmentDTO> shipmentDTOs = new ArrayList<>();
+        List<ShipmentEntity> shipmentEntities = shipmentRepository.findAllShipmentByCreatedBy(userName);
+
+        for (ShipmentEntity shipmentEntity : shipmentEntities) {
+            shipmentDTOs.add(shipmentConverter.toDTO(shipmentEntity));
+        }
+        return shipmentDTOs;
+    }
+
+
 }

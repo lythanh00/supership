@@ -20,4 +20,6 @@ public interface IShipmentService {
     ShipmentDTO updateDriverUser(long shipmentId, long driverUserId);
 
     ShipmentDTO updateWorkStore(long shipmentId, String workStore);
+
+    List<ShipmentDTO> getAllShipmentByCreatedBy(String userName);
 }
